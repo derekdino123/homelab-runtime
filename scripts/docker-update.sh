@@ -49,4 +49,4 @@ for dir in "${DOCKER_DIRS[@]}"; do
     fi
 done
 
-print_success "Docker update completed"
+print_success "Docker update completed!"
