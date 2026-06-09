@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /shared/lib/ui.sh
+source /opt/shared/lib/ui.sh
 
 echo "========================================"
 echo " System Update"
