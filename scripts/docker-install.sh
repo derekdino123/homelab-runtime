@@ -4,7 +4,7 @@
 # Load Shared UI Library
 # ========================================
 
-source /shared/scripts/lib/ui.sh
+source /shared/lib/ui.sh
 
 require_root
 
