@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#name: startup
 #desc: Bootstrap script for a new container
 
 # =========================
