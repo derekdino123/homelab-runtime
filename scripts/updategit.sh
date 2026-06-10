@@ -1,4 +1,7 @@
 #!/bin/bash
+
+#desc: Pulls Github repo (updates scripts)
+
 set -e
 
 REPO_DIR="/opt/shared"
