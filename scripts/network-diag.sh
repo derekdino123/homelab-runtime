@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#name: network-diag
 #desc: Displays the current network configuration of this container
 
 source /opt/shared/lib/ui.sh
