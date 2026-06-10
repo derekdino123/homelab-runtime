@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#desc: Bootstrap script for a new container
+
 # =========================
 # Terminal Colors
 # =========================
