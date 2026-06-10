@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#name: updategit
 #desc: Pulls Github repo (updates scripts)
 
 set -e
