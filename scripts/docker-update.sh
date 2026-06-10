@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#name: docker-update
 #desc: Controlled deployment of updating Docker
 
 set -e
