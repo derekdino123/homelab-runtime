@@ -1,6 +1,7 @@
 #!/bin/bash
 
-#desc Installs Docker CE and Compose
+#name: docker-install
+#desc: Installs Docker CE and Compose
 
 set -e
 
