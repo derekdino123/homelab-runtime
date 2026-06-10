@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#name: updateall
 #desc: Updates Debian apps and pulls from Github repo (updates all scripts)
 
 echo "========================================"
