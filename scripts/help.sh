@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#name: help
 #desc: Shows all available commands
 
 BASE="/opt/shared/scripts"
@@ -20,8 +21,9 @@ for script in "$BASE"/*.sh; do
 
     name=$(basename "$script" .sh)
 
-    # extract description from: # desc:
-    desc=$(grep -m 1 "^# desc:" "$script" 2>/dev/null | sed 's/# desc:[ ]*//')
+    # extract name and description from header:
+    name=$(grep -m 1 "^# *name:" "$script" | sed 's/^# *name:[[:space:]]*//')
+    desc=$(grep -m 1 "^# *desc:" "$script" | sed 's/^# *desc:[[:space:]]*//')
 
     if [ -z "$desc" ]; then
         desc="(no description)"
