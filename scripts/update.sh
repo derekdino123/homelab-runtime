@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#desc: Updates Debian apps
+
 source /opt/shared/lib/ui.sh
 
 echo "========================================"
