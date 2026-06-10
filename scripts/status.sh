@@ -1,4 +1,6 @@
+#!/bin/bash
 
+#name: status
 #desc: Shows hardware info of container
 
 source /opt/shared/lib/ui.sh
