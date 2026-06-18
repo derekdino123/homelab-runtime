@@ -1,6 +1,3 @@
-- shows all available dispatcher commands
-
-```bash
 #!/bin/bash
 
 #name: help
@@ -38,4 +35,3 @@ echo ""
 echo "Usage:"
 echo "  homelab <command>"
 echo ""
-```
