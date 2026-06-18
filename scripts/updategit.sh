@@ -1,8 +1,3 @@
-- prompts before upgrading
-- creates a backup
-- logs changes
-
-```bash
 #!/bin/bash
 
 #name: updategit
@@ -120,4 +115,3 @@ echo "========================================"
 echo "✔ Repository synchronized with GitHub"
 echo "📦 Backup (if any deletions): $BACKUP_DIR"
 echo "========================================"
-```
