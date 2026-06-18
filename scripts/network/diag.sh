@@ -1,4 +1,3 @@
-```bash
 #!/bin/bash
 
 # name: diag
@@ -43,4 +42,3 @@ check "Internet Reachable" \
 
 check "DNS Resolution" \
     "getent hosts google.com"
-```
