@@ -1,4 +1,3 @@
-```bash
 #!/bin/bash
 
 # name: info
@@ -42,4 +41,3 @@ hostname -I
 echo
 print_info "Load"
 uptime
-```
