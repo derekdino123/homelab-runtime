@@ -1,37 +1,57 @@
 #!/bin/bash
 
-#name: help
-#desc: Shows all available commands
+# name: help
+# desc: Show all available homelab commands
 
 BASE="/opt/shared/scripts"
 
-echo ""
+echo
 echo "====================================="
 echo " Homelab Available Commands"
 echo "====================================="
-echo ""
+echo
 
 if [ ! -d "$BASE" ]; then
-    echo "No scripts directory found: $BASE"
+    echo "Scripts directory not found:"
+    echo "$BASE"
     exit 1
 fi
 
-for script in "$BASE"/*.sh; do
-    [ -f "$script" ] || continue
+for group in "$BASE"/*; do
 
-    name=$(basename "$script" .sh)
+    [ -d "$group" ] || continue
 
-    # extract description from: # desc:
-    desc=$(grep -m 1 "^# desc:" "$script" 2>/dev/null | sed 's/# desc:[ ]*//')
+    group_name=$(basename "$group")
 
-    if [ -z "$desc" ]; then
-        desc="(no description)"
+    echo "[$group_name]"
+
+    found=0
+
+    for script in "$group"/*.sh; do
+
+        [ -f "$script" ] || continue
+
+        found=1
+
+        name=$(basename "$script" .sh)
+
+        desc=$(grep -m1 '^#[ ]*desc:' "$script" \
+            | sed 's/^#[ ]*desc:[ ]*//')
+
+        [ -z "$desc" ] && desc="(no description)"
+
+        printf "  %-15s - %s\n" "$name" "$desc"
+
+    done | sort
+
+    if [ "$found" -eq 0 ]; then
+        echo "  (no commands)"
     fi
 
-    printf "%-20s - %s\n" "$name" "$desc"
-done | sort
+    echo
 
-echo ""
+done
+
 echo "Usage:"
-echo "  homelab <command>"
-echo ""
+echo "  homelab <group> <command>"
+echo
