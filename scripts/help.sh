@@ -25,7 +25,8 @@ fi
 # ROOT COMMANDS
 # ========================================
 
-print_header "ROOT COMMANDS"
+echo
+echo -e  "${BLUE}[ROOT COMMANDS]${NC}"
 
 shopt -s nullglob
 root_scripts=("$BASE"/*.sh)
