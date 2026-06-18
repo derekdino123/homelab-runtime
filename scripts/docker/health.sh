@@ -1,4 +1,3 @@
-```bash
 #!/bin/bash
 
 # name
@@ -19,4 +18,3 @@ echo
 
 docker ps --format \
 '{{.Names}} {{.Status}}'
-```
