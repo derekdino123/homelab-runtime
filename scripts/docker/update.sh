@@ -1,7 +1,3 @@
-- controlled deployment
-- prints changes
-
-``` bash
 #!/bin/bash
 
 #name: update
@@ -58,4 +54,3 @@ for dir in "${DOCKER_DIRS[@]}"; do
 done
 
 print_success "Docker update completed"
-```
