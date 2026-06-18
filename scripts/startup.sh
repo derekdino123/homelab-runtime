@@ -1,6 +1,3 @@
-bootstrap script
-
-```bash
 #!/bin/bash
 
 #name: startup
@@ -252,6 +249,3 @@ print_success "System setup finished successfully"
 print_info "Run: source $BASHRC_FILE"
 
 source "$BASHRC_FILE"
-
-
-```
