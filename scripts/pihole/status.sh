@@ -1,4 +1,3 @@
-```bash
 #!/bin/bash
 
 # name: status
@@ -41,4 +40,3 @@ else
         || print_error "DNS Failed Through VIP"
 
 fi
-```
