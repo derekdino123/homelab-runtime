@@ -1,4 +1,3 @@
-```bash
 #!/bin/bash
 
 # name: interfaces
@@ -9,4 +8,3 @@ source /opt/shared/lib/ui.sh
 print_header "Network Interfaces"
 
 ip -br addr
-```
