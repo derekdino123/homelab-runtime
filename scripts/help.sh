@@ -10,11 +10,11 @@ UI="/opt/shared/lib/ui.sh"
 if [ -f "$UI" ]; then
     source "$UI"
 else
-    # fallback if UI missing
-    header() { echo -e "\n=== $1 ===\n"; }
+    print_header() { echo -e "\n=== $1 ===\n"; }
+    group_header() { echo -e "\n[$1]\n"; }
 fi
 
-header "Homelab Available Commands"
+print_header "Homelab Available Commands"
 
 if [ ! -d "$BASE" ]; then
     echo "Scripts directory not found: $BASE"
@@ -27,26 +27,25 @@ fi
 
 print_header "ROOT COMMANDS"
 
-ROOT_FOUND=0
+shopt -s nullglob
+root_scripts=("$BASE"/*.sh)
+shopt -u nullglob
 
-for script in "$BASE"/*.sh; do
-    [ -f "$script" ] || continue
-
-    ROOT_FOUND=1
-
-    name=$(basename "$script" .sh)
-
-    desc=$(grep -m1 '^#[ ]*desc:' "$script" \
-        | sed 's/^#[ ]*desc:[ ]*//')
-
-    [ -z "$desc" ] && desc="(no description)"
-
-    printf "  %-15s - %s\n" "$name" "$desc"
-
-done | sort
-
-if [ "$ROOT_FOUND" -eq 0 ]; then
+if [ ${#root_scripts[@]} -eq 0 ]; then
     echo "  (no commands)"
+else
+    for script in "${root_scripts[@]}"; do
+
+        name=$(basename "$script" .sh)
+
+        desc=$(grep -m1 '^#[ ]*desc:' "$script" \
+            | sed 's/^#[ ]*desc:[ ]*//')
+
+        [ -z "$desc" ] && desc="(no description)"
+
+        printf "  %-15s - %s\n" "$name" "$desc"
+
+    done | sort
 fi
 
 echo
@@ -61,13 +60,19 @@ for group in "$BASE"/*; do
 
     group_name=$(basename "$group")
 
-    print_header "$group_name"
+    group_header "$group_name"
 
-    found=0
+    shopt -s nullglob
+    scripts=("$group"/*.sh)
+    shopt -u nullglob
 
-    for script in "$group"/*.sh; do
-        [ -f "$script" ] || continue
-        found=1
+    if [ ${#scripts[@]} -eq 0 ]; then
+        echo "  (no commands)"
+        echo
+        continue
+    fi
+
+    for script in "${scripts[@]}"; do
 
         name=$(basename "$script" .sh)
 
@@ -77,11 +82,8 @@ for group in "$BASE"/*; do
         [ -z "$desc" ] && desc="(no description)"
 
         printf "  %-15s - %s\n" "$name" "$desc"
-    done | sort
 
-    if [ "$found" -eq 0 ]; then
-        echo "  (no commands)"
-    fi
+    done | sort
 
     echo
 
