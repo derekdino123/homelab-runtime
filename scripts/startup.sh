@@ -1,3 +1,6 @@
+bootstrap script
+
+```bash
 #!/bin/bash
 
 #name: startup
@@ -66,7 +69,7 @@ print_header "Installing Required Packages"
 apt install -y sudo git curl tree htop openssh-server
 
 if [ $? -eq 0 ]; then
-    print_success "Installed packages: sudo, git, curl, tree, htop, btop, openssh-server"
+    print_success "Installed packages: sudo, git, curl, tree, htop, openssh-server"
 else
     print_error "Package installation failed"
     exit 1
@@ -250,3 +253,5 @@ print_info "Run: source $BASHRC_FILE"
 
 source "$BASHRC_FILE"
 
+
+```

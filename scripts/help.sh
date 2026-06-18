@@ -1,3 +1,6 @@
+- shows all available dispatcher commands
+
+```bash
 #!/bin/bash
 
 #name: help
@@ -21,9 +24,8 @@ for script in "$BASE"/*.sh; do
 
     name=$(basename "$script" .sh)
 
-    # extract name and description from header:
-    name=$(grep -m 1 "^# *name:" "$script" | sed 's/^# *name:[[:space:]]*//')
-    desc=$(grep -m 1 "^# *desc:" "$script" | sed 's/^# *desc:[[:space:]]*//')
+    # extract description from: # desc:
+    desc=$(grep -m 1 "^# desc:" "$script" 2>/dev/null | sed 's/# desc:[ ]*//')
 
     if [ -z "$desc" ]; then
         desc="(no description)"
@@ -36,3 +38,4 @@ echo ""
 echo "Usage:"
 echo "  homelab <command>"
 echo ""
+```

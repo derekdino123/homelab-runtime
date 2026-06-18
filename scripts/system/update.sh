@@ -1,3 +1,6 @@
+updates Linux system
+
+``` bash
 #!/bin/bash
 
 #name: update
@@ -23,3 +26,4 @@ fi
 
 echo
 df -h /
+```

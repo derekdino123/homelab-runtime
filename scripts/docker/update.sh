@@ -1,7 +1,11 @@
+- controlled deployment
+- prints changes
+
+``` bash
 #!/bin/bash
 
-#name: docker-update
-#desc: Controlled deployment of updating Docker
+#name: update
+#desc: Controlled update of Docker
 
 set -e
 
@@ -53,4 +57,5 @@ for dir in "${DOCKER_DIRS[@]}"; do
     fi
 done
 
-print_success "Docker update completed!"
+print_success "Docker update completed"
+```
