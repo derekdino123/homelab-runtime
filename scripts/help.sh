@@ -4,29 +4,32 @@
 # desc: Show all available homelab commands
 
 BASE="/opt/shared/scripts"
+UI="/opt/shared/lib/ui.sh"
 
-echo
-echo "====================================="
-echo " Homelab Available Commands"
-echo "====================================="
-echo
+# Load UI library
+if [ -f "$UI" ]; then
+    source "$UI"
+else
+    # fallback if UI missing
+    header() { echo -e "\n=== $1 ===\n"; }
+fi
+
+header "Homelab Available Commands"
 
 if [ ! -d "$BASE" ]; then
-    echo "Scripts directory not found:"
-    echo "$BASE"
+    echo "Scripts directory not found: $BASE"
     exit 1
 fi
 
 # ========================================
-# Root Commands
+# ROOT COMMANDS
 # ========================================
 
-echo "[root]"
+print_header "ROOT COMMANDS"
 
 ROOT_FOUND=0
 
 for script in "$BASE"/*.sh; do
-
     [ -f "$script" ] || continue
 
     ROOT_FOUND=1
@@ -49,7 +52,7 @@ fi
 echo
 
 # ========================================
-# Groups
+# GROUP COMMANDS
 # ========================================
 
 for group in "$BASE"/*; do
@@ -58,17 +61,13 @@ for group in "$BASE"/*; do
 
     group_name=$(basename "$group")
 
-    echo "[$group_name]"
+    print_header "$group_name"
 
-    scripts=("$group"/*.sh)
+    found=0
 
-    if [ ! -f "${scripts[0]}" ]; then
-        echo "  (no commands)"
-        echo
-        continue
-    fi
-
-    for script in "${scripts[@]}"; do
+    for script in "$group"/*.sh; do
+        [ -f "$script" ] || continue
+        found=1
 
         name=$(basename "$script" .sh)
 
@@ -78,8 +77,11 @@ for group in "$BASE"/*; do
         [ -z "$desc" ] && desc="(no description)"
 
         printf "  %-15s - %s\n" "$name" "$desc"
-
     done | sort
+
+    if [ "$found" -eq 0 ]; then
+        echo "  (no commands)"
+    fi
 
     echo
 
