@@ -29,6 +29,12 @@ header() {
     echo -e "${BLUE}====================================${NC}"
 }
 
+group_header() {
+    echo
+    echo -e "${BLUE}$1${NC}"
+    echo -e "${BLUE}--------------------${NC}"
+}
+
 # Compatibility aliases
 
 print_success() { success "$1"; }
