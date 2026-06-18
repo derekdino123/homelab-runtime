@@ -1,4 +1,3 @@
-```bash
 #!/bin/bash
 
 #name: install
@@ -150,4 +149,3 @@ print_success "Docker installation completed"
 echo
 print_info "Run: source ~/.bashrc"
 echo
-```
