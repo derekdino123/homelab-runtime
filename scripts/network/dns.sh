@@ -1,4 +1,3 @@
-```bash
 #!/bin/bash
 
 # name: dns
@@ -28,4 +27,3 @@ do
     echo
 
 done
-```
