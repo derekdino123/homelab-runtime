@@ -31,8 +31,8 @@ header() {
 
 group_header() {
     echo
-    echo -e "${BLUE}$1${NC}"
-    echo -e "${BLUE}--------------------${NC}"
+    echo -e "${BLUE}|$1${NC}"
+    echo -e "${BLUE}----------------${NC}"
 }
 
 # Compatibility aliases
