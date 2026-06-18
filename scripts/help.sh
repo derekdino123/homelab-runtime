@@ -17,6 +17,41 @@ if [ ! -d "$BASE" ]; then
     exit 1
 fi
 
+# ========================================
+# Root Commands
+# ========================================
+
+echo "[root]"
+
+ROOT_FOUND=0
+
+for script in "$BASE"/*.sh; do
+
+    [ -f "$script" ] || continue
+
+    ROOT_FOUND=1
+
+    name=$(basename "$script" .sh)
+
+    desc=$(grep -m1 '^#[ ]*desc:' "$script" \
+        | sed 's/^#[ ]*desc:[ ]*//')
+
+    [ -z "$desc" ] && desc="(no description)"
+
+    printf "  %-15s - %s\n" "$name" "$desc"
+
+done | sort
+
+if [ "$ROOT_FOUND" -eq 0 ]; then
+    echo "  (no commands)"
+fi
+
+echo
+
+# ========================================
+# Groups
+# ========================================
+
 for group in "$BASE"/*; do
 
     [ -d "$group" ] || continue
@@ -25,13 +60,15 @@ for group in "$BASE"/*; do
 
     echo "[$group_name]"
 
-    found=0
+    scripts=("$group"/*.sh)
 
-    for script in "$group"/*.sh; do
+    if [ ! -f "${scripts[0]}" ]; then
+        echo "  (no commands)"
+        echo
+        continue
+    fi
 
-        [ -f "$script" ] || continue
-
-        found=1
+    for script in "${scripts[@]}"; do
 
         name=$(basename "$script" .sh)
 
@@ -44,14 +81,12 @@ for group in "$BASE"/*; do
 
     done | sort
 
-    if [ "$found" -eq 0 ]; then
-        echo "  (no commands)"
-    fi
-
     echo
 
 done
 
 echo "Usage:"
+echo "  homelab <command>"
+echo "  homelab <group>"
 echo "  homelab <group> <command>"
 echo
