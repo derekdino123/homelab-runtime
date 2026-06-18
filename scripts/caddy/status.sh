@@ -1,4 +1,3 @@
-```bash
 #!/bin/bash
 
 # name: status
@@ -46,5 +45,3 @@ else
         || print_error "Caddy Unreachable"
 
 fi
-
-```
