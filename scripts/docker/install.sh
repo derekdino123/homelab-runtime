@@ -54,20 +54,20 @@ print_header "Detecting Operating System"
 source /etc/os-release
 
 case "$ID" in
-
     ubuntu)
         DOCKER_REPO="https://download.docker.com/linux/ubuntu"
+        DOCKER_GPG="https://download.docker.com/linux/ubuntu/gpg"
         ;;
 
     debian)
         DOCKER_REPO="https://download.docker.com/linux/debian"
+        DOCKER_GPG="https://download.docker.com/linux/debian/gpg"
         ;;
 
     *)
         print_error "Unsupported OS: $ID"
         exit 1
         ;;
-
 esac
 
 print_info "OS: $PRETTY_NAME"
@@ -82,11 +82,12 @@ print_header "Adding Docker Repository"
 
 install -m 0755 -d /etc/apt/keyrings
 
-curl -fsSL https://download.docker.com/linux/gpg \
-    -o /etc/apt/keyrings/docker.asc
-
-chmod a+r /etc/apt/keyrings/docker.asc
-
+if curl -fsSL "$DOCKER_GPG" -o /etc/apt/keyrings/docker.asc; then
+    chmod a+r /etc/apt/keyrings/docker.asc
+else
+    print_error "Failed to download Docker GPG key"
+    exit 1
+fi
 
 echo \
 "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] \
