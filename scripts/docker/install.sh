@@ -179,7 +179,3 @@ docker --version
 docker compose version
 
 print_success "Docker installation completed"
-
-echo
-print_info "Run: source ~/.bashrc"
-echo
