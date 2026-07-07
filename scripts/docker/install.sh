@@ -12,21 +12,6 @@ source /opt/shared/lib/ui.sh
 require_root
 
 # ========================================
-# Update Packages
-# ========================================
-
-print_header "Updating Packages"
-
-apt update && apt upgrade -y
-
-if [ $? -eq 0 ]; then
-    print_success "System updated successfully"
-else
-    print_error "System update failed"
-    exit 1
-fi
-
-# ========================================
 # Install Prerequisites
 # ========================================
 
@@ -168,6 +153,22 @@ EOF
     print_success "Docker aliases added"
 else
     print_info "Docker aliases already exist"
+fi
+
+
+# ========================================
+# Update Packages
+# ========================================
+
+print_header "Updating Packages"
+
+apt update && apt upgrade -y
+
+if [ $? -eq 0 ]; then
+    print_success "System packages updated successfully"
+else
+    print_error "System package update failed"
+    exit 1
 fi
 
 # ========================================
