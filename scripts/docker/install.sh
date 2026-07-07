@@ -46,6 +46,45 @@ else
 fi
 
 # ========================================
+# Detect Operating System
+# ========================================
+
+print_header "Detecting Operating System"
+
+if [ -f /etc/os-release ]; then
+    source /etc/os-release
+else
+    print_error "Cannot detect operating system"
+    exit 1
+fi
+
+OS_ID="$ID"
+OS_CODENAME="$VERSION_CODENAME"
+
+print_info "Detected: $PRETTY_NAME"
+print_info "Codename: $OS_CODENAME"
+
+
+case "$OS_ID" in
+
+    debian)
+        DOCKER_REPO="https://download.docker.com/linux/debian"
+        ;;
+
+    ubuntu)
+        DOCKER_REPO="https://download.docker.com/linux/ubuntu"
+        ;;
+
+    *)
+        print_error "Unsupported OS: $OS_ID"
+        exit 1
+        ;;
+
+esac
+
+print_success "Using Docker repository: $DOCKER_REPO"
+
+# ========================================
 # Add Docker Repository
 # ========================================
 
@@ -53,20 +92,25 @@ print_header "Adding Docker Repository"
 
 install -m 0755 -d /etc/apt/keyrings
 
-curl -fsSL https://download.docker.com/linux/debian/gpg \
+curl -fsSL https://download.docker.com/linux/gpg \
     -o /etc/apt/keyrings/docker.asc
 
 chmod a+r /etc/apt/keyrings/docker.asc
 
+
 echo \
 "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] \
-https://download.docker.com/linux/debian \
-$(. /etc/os-release && echo "$VERSION_CODENAME") stable" \
+$DOCKER_REPO \
+$OS_CODENAME stable" \
 > /etc/apt/sources.list.d/docker.list
 
-apt update
 
-print_success "Docker repository added"
+if apt update; then
+    print_success "Docker repository added"
+else
+    print_error "Failed to add Docker repository"
+    exit 1
+fi
 
 # ========================================
 # Install Docker
