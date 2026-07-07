@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+#name: update
+#desc: Builds a Caddy binary with the Cloudflare module and installs it
+
 #TODO: Update to use ui.sh lib
 
 set -euo pipefail
