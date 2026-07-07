@@ -3,6 +3,9 @@
 #name: startup
 #desc: Bootstrap script for a new container
 
+set -o pipefail
+export DEBIAN_FRONTEND=noninteractive
+
 # =========================
 # Terminal Colors
 # =========================
@@ -49,13 +52,11 @@ fi
 
 print_header "Updating System Packages"
 
-apt update && apt upgrade -y
-
-if [ $? -eq 0 ]; then
+if apt update && apt full-upgrade -y; then
     print_success "System packages updated successfully"
 else
-    echo -e "${RED}✘ Failed to update packages${NC}"
-    # exit 1 , UNCOMMENT FOR EXIT AFTER FAILED UPDATE
+    print_error "Failed to update packages"
+    # exit 1  # Uncomment to stop after update failure
 fi
 
 # Install Packages
@@ -63,15 +64,29 @@ fi
 
 print_header "Installing Required Packages"
 
-apt install -y sudo git curl tree htop btop openssh-server
+PACKAGES=(
+    sudo
+    git
+    curl
+    wget
+    tree
+    htop
+    btop
+    nano
+    vim
+    unzip
+    zip
+    net-tools
+    dnsutils
+    openssh-server
+)
 
-if [ $? -eq 0 ]; then
-    print_success "Installed packages: sudo, git, curl, tree, htop, btop, openssh-server"
+if apt install -y "${PACKAGES[@]}"; then
+    print_success "Installed required packages"
 else
     print_error "Package installation failed"
     exit 1
 fi
-
 
 
 # Allow SSH
@@ -79,24 +94,58 @@ fi
 
 print_header "Configuring SSH"
 
-sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
-sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+SSH_CONFIG="/etc/ssh/sshd_config"
+
+if [ ! -f "$SSH_CONFIG" ]; then
+    print_error "SSH configuration file not found"
+    exit 1
+fi
+
+sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/' "$SSH_CONFIG"
+sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/' "$SSH_CONFIG"
 
 print_success "Enabled SSH root login with password authentication"
 
 # Restart SSH Service
 # =========================
 
-print_header "Restarting SSH Service"
+# =========================================
+# Configure SSH
+# =========================================
 
-systemctl restart ssh
+print_header "Configuring SSH"
 
-if [ $? -eq 0 ]; then
-    print_success "SSH service restarted successfully"
-else
-    echo -e "${RED}✘ Failed to restart SSH service${NC}"
-    exit 1
+SSH_CONFIG="/etc/ssh/sshd_config"
+
+# Create SSH config if missing
+if [ ! -f "$SSH_CONFIG" ]; then
+    print_info "SSH configuration file not found. Creating it..."
+
+    mkdir -p "$(dirname "$SSH_CONFIG")"
+
+    touch "$SSH_CONFIG"
+
+    print_success "Created SSH configuration file"
 fi
+
+
+# Configure SSH settings
+
+if grep -q "^#\?PermitRootLogin" "$SSH_CONFIG"; then
+    sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/' "$SSH_CONFIG"
+else
+    echo "PermitRootLogin yes" >> "$SSH_CONFIG"
+fi
+
+
+if grep -q "^#\?PasswordAuthentication" "$SSH_CONFIG"; then
+    sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/' "$SSH_CONFIG"
+else
+    echo "PasswordAuthentication yes" >> "$SSH_CONFIG"
+fi
+
+
+print_success "Configured SSH root login and password authentication"
 
 # =========================================
 # Configure Bash
@@ -245,7 +294,10 @@ fi
 
 print_header "Setup Complete"
 
-print_success "System setup finished successfully"
+print_success "Debian system setup finished successfully"
+
 print_info "Run: source $BASHRC_FILE"
 
+# Reload Bash Config
+# ==================
 source "$BASHRC_FILE"
