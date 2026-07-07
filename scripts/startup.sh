@@ -63,7 +63,7 @@ fi
 
 print_header "Installing Required Packages"
 
-apt install -y sudo git curl tree htop openssh-server
+apt install -y sudo git curl tree htop btop openssh-server
 
 if [ $? -eq 0 ]; then
     print_success "Installed packages: sudo, git, curl, tree, htop, btop, openssh-server"
