@@ -51,38 +51,28 @@ fi
 
 print_header "Detecting Operating System"
 
-if [ -f /etc/os-release ]; then
-    source /etc/os-release
-else
-    print_error "Cannot detect operating system"
-    exit 1
-fi
+source /etc/os-release
 
-OS_ID="$ID"
-OS_CODENAME="$VERSION_CODENAME"
-
-print_info "Detected: $PRETTY_NAME"
-print_info "Codename: $OS_CODENAME"
-
-
-case "$OS_ID" in
-
-    debian)
-        DOCKER_REPO="https://download.docker.com/linux/debian"
-        ;;
+case "$ID" in
 
     ubuntu)
         DOCKER_REPO="https://download.docker.com/linux/ubuntu"
         ;;
 
+    debian)
+        DOCKER_REPO="https://download.docker.com/linux/debian"
+        ;;
+
     *)
-        print_error "Unsupported OS: $OS_ID"
+        print_error "Unsupported OS: $ID"
         exit 1
         ;;
 
 esac
 
-print_success "Using Docker repository: $DOCKER_REPO"
+print_info "OS: $PRETTY_NAME"
+print_info "Docker repository: $DOCKER_REPO"
+
 
 # ========================================
 # Add Docker Repository
@@ -101,7 +91,7 @@ chmod a+r /etc/apt/keyrings/docker.asc
 echo \
 "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] \
 $DOCKER_REPO \
-$OS_CODENAME stable" \
+$VERSION_CODENAME stable" \
 > /etc/apt/sources.list.d/docker.list
 
 
