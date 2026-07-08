@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # name: status
-# desc: Check Caddy status
+# desc: Check Caddy status if installed on local machine, checks connection to caddy if not
 
 # Checks connection to Caddy (192.168.1.11)
 
