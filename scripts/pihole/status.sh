@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # name: status
-# desc: Check Pi-hole status
+# desc: Check Pi-hole status and connection
 
 # Checks connection to KeepAlived (192.168.1.112)
 
